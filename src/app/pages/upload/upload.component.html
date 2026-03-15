@@ -1,0 +1,35 @@
+<div class="upload-container">
+    <div class="upload-card">
+        <h2 class="upload-title">Upload CSV File</h2>
+
+        <div class="upload-description">
+            <p>Import your data by uploading a CSV file. Our system will process and organize your information
+                efficiently.</p>
+        </div>
+
+        <div class="upload-section">
+            <label for="csvFile" class="upload-label">
+                <div class="upload-box">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p class="upload-text">Click to upload or drag and drop</p>
+                    <p class="upload-subtext">CSV files only</p>
+                </div>
+            </label>
+            <input id="csvFile" type="file" (change)="onFileChange($event)" accept=".csv" class="file-input">
+        </div>
+
+        <div *ngIf="error" class="error-message">
+            <span class="error-icon">⚠</span>
+            {{error}}
+        </div>
+
+        <div *ngIf="fileName" class="success-message">
+            <span class="success-icon">✓</span>
+            File uploaded: {{fileName}}
+        </div>
+    </div>
+</div>
