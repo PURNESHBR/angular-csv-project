@@ -1,6 +1,6 @@
 <div class="details-container">
     <div class="details-header">
-        <button class="back-btn" (click)="goBack()">
+        <button type="button" class="back-btn" (click)="goBack()">
             <svg class="back-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -8,6 +8,21 @@
             Back to List
         </button>
         <h1 class="page-title">User Details</h1>
+        <div class="nav-buttons">
+            <button type="button" class="nav-btn" (click)="goPrev()" [disabled]="currentIndex === 0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Prev
+            </button>
+            <span class="nav-counter">{{currentIndex + 1}} / {{totalUsers}}</span>
+            <button type="button" class="nav-btn" (click)="goNext()" [disabled]="currentIndex === totalUsers - 1">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
     </div>
 
     <div class="details-content" *ngIf="user">

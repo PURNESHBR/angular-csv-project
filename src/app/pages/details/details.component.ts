@@ -9,26 +9,38 @@ import { DataService } from '../../services/data.service';
 })
 export class DetailsComponent implements OnInit {
 
-  user:any;
+  user: any;
+  currentIndex: number = 0;
+  totalUsers: number = 0;
 
   constructor(
     private route: ActivatedRoute,
     private dataService: DataService,
     private router: Router
-  ){}
+  ) {}
 
-  ngOnInit(){
-
-    const id = this.route.snapshot.paramMap.get('id');
-
-    this.user = this.dataService.getUser(Number(id));
-
+  ngOnInit() {
+    this.totalUsers = this.dataService.getData().length;
+    this.route.paramMap.subscribe(params => {
+      this.currentIndex = Number(params.get('id'));
+      this.user = this.dataService.getUser(this.currentIndex);
+    });
   }
 
-  goBack(){
-
+  goBack() {
     this.router.navigate(['/list']);
+  }
 
+  goPrev() {
+    if (this.currentIndex > 0) {
+      this.router.navigate(['/details', this.currentIndex - 1]);
+    }
+  }
+
+  goNext() {
+    if (this.currentIndex < this.totalUsers - 1) {
+      this.router.navigate(['/details', this.currentIndex + 1]);
+    }
   }
 
 }
