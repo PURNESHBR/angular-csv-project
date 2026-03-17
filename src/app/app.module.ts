@@ -7,17 +7,13 @@ import { AppComponent } from './app.component';
 import { UploadComponent } from './pages/upload/upload.component';
 import { ListComponent } from './pages/list/list.component';
 import { DetailsComponent } from './pages/details/details.component';
-import { SignupComponent } from './pages/signup/signup.component';
-import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UploadComponent,
     ListComponent,
-    DetailsComponent,
-    SignupComponent,
-    LoginComponent
+    DetailsComponent
   ],
   imports: [
     BrowserModule,
