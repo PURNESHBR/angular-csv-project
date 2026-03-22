@@ -40,8 +40,25 @@
           </select>
         </div>
 
-        <!-- Search box: hidden when filterField is 'model' -->
-        <div class="search-box" *ngIf="filterField !== 'model'">
+        <!-- Due date range dropdown: shown only when filterField is 'due_date' -->
+        <div class="filter-box" *ngIf="filterField === 'due_date'">
+          <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <select class="filter-select" aria-label="Select due date range" [(ngModel)]="selectedDueRange"
+            (change)="applyFilter()">
+            <option value="all">All Dates</option>
+            <option value="3days">Due in 3 Days</option>
+            <option value="7days">Due in 7 Days</option>
+            <option value="month">Due this Month</option>
+            <option value="overdue">Overdue</option>
+          </select>
+        </div>
+
+        <!-- Search box: hidden when filterField is 'model' or 'due_date' -->
+        <div class="search-box" *ngIf="filterField !== 'model' && filterField !== 'due_date'">
           <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

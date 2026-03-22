@@ -82,6 +82,7 @@ export class ListComponent implements OnInit {
   searchTerm: string = '';
   filterField: string = 'all';
   selectedModel: string = 'all';
+  selectedDueRange: string = 'all';
   modelOptions: string[] = [];
 
   avatarColors = [
@@ -122,11 +123,36 @@ export class ListComponent implements OnInit {
   applyFilter() {
     const term = this.searchTerm.toLowerCase().trim();
 
-    // When model filter is active, use the dropdown selection instead of text search
+    // Model filter: use dropdown selection
     if (this.filterField === 'model') {
       this.filteredUsers = this.selectedModel === 'all'
         ? [...this.users]
         : this.users.filter(u => u.model === this.selectedModel);
+      return;
+    }
+
+    // Due date filter: use range selection
+    if (this.filterField === 'due_date') {
+      if (this.selectedDueRange === 'all') {
+        this.filteredUsers = [...this.users];
+        return;
+      }
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      let maxDate = new Date(today);
+
+      if (this.selectedDueRange === '7days')  maxDate.setDate(today.getDate() + 7);
+      if (this.selectedDueRange === '3days')  maxDate.setDate(today.getDate() + 3);
+      if (this.selectedDueRange === 'month')  maxDate.setMonth(today.getMonth() + 1);
+      if (this.selectedDueRange === 'overdue') maxDate = new Date(today);
+
+      this.filteredUsers = this.users.filter(u => {
+        if (!u.due_date) return false;
+        const due = new Date(u.due_date);
+        due.setHours(0, 0, 0, 0);
+        if (this.selectedDueRange === 'overdue') return due < today;
+        return due >= today && due <= maxDate;
+      });
       return;
     }
 
@@ -151,9 +177,9 @@ export class ListComponent implements OnInit {
   }
 
   onFilterFieldChange() {
-    // Reset selections when switching filter type
     this.searchTerm = '';
     this.selectedModel = 'all';
+    this.selectedDueRange = 'all';
     this.applyFilter();
   }
 
