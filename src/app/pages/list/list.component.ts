@@ -81,6 +81,8 @@ export class ListComponent implements OnInit {
   filteredUsers: any[] = [];
   searchTerm: string = '';
   filterField: string = 'all';
+  selectedModel: string = 'all';
+  modelOptions: string[] = [];
 
   avatarColors = [
     'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -102,7 +104,13 @@ export class ListComponent implements OnInit {
     this.users = this.dataService.getData();
     this.filteredUsers = [...this.users];
 
-    if(this.users.length === 0){
+    // Extract unique model values from CSV data
+    const models = this.users
+      .map(u => u.model)
+      .filter(m => m && m.trim() !== '');
+    this.modelOptions = [...new Set(models)].sort();
+
+    if (this.users.length === 0) {
       this.router.navigate(['/']);
     }
   }
@@ -113,6 +121,14 @@ export class ListComponent implements OnInit {
 
   applyFilter() {
     const term = this.searchTerm.toLowerCase().trim();
+
+    // When model filter is active, use the dropdown selection instead of text search
+    if (this.filterField === 'model') {
+      this.filteredUsers = this.selectedModel === 'all'
+        ? [...this.users]
+        : this.users.filter(u => u.model === this.selectedModel);
+      return;
+    }
 
     if (!term) {
       this.filteredUsers = [...this.users];
@@ -132,6 +148,13 @@ export class ListComponent implements OnInit {
       const fieldValue = String(user[this.filterField] ?? '').toLowerCase();
       return fieldValue.includes(term);
     });
+  }
+
+  onFilterFieldChange() {
+    // Reset selections when switching filter type
+    this.searchTerm = '';
+    this.selectedModel = 'all';
+    this.applyFilter();
   }
 
   getOriginalIndex(user: any): number {
